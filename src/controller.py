@@ -2,6 +2,7 @@ from fastapi import Depends, HTTPException, status, Form
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from src.models import TokenResponse, UserInfo
 from src.service import AuthService
+from pydantic import SecretStr
 
 # Initialize HTTPBearer security dependency
 bearer_scheme = HTTPBearer()
@@ -29,7 +30,7 @@ class AuthController:
         }
 
     @staticmethod
-    def login(username: str = Form(...), password: str = Form(...)) -> TokenResponse:
+    def login(username: str = Form(...), password: SecretStr = Form(...)) -> TokenResponse:
         """
         Authenticate user and return access token.
 
@@ -44,7 +45,8 @@ class AuthController:
             TokenResponse: Contains the access token upon successful authentication.
         """
         # Authenticate the user using the AuthService
-        access_token = AuthService.authenticate_user(username, password)
+        access_token = AuthService.authenticate_user(
+            username, password)
 
         if not access_token:
             raise HTTPException(
@@ -54,7 +56,7 @@ class AuthController:
 
         return TokenResponse(access_token=access_token)
 
-    @staticmethod
+    @ staticmethod
     def protected_endpoint(
         credentials: HTTPAuthorizationCredentials = Depends(bearer_scheme),
     ) -> UserInfo:

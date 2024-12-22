@@ -2,16 +2,18 @@ from fastapi import HTTPException, status
 from keycloak.exceptions import KeycloakAuthenticationError
 from src.config import keycloak_openid
 from src.models import UserInfo
+from pydantic import SecretStr
 
 
 class AuthService:
     @staticmethod
-    def authenticate_user(username: str, password: str) -> str:
+    def authenticate_user(username: str, password: SecretStr) -> str:
         """
         Authenticate the user using Keycloak and return an access token.
         """
         try:
-            token = keycloak_openid.token(username, password)
+            token = keycloak_openid.token(
+                username, password.get_secret_value())
             return token["access_token"]
         except KeycloakAuthenticationError:
             raise HTTPException(

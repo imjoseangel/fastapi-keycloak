@@ -2,6 +2,7 @@ from fastapi import FastAPI, Depends, Form
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from src.models import TokenResponse, UserInfo
 from src.controller import AuthController
+from pydantic import SecretStr
 
 # Initialize the FastAPI app
 app = FastAPI()
@@ -21,7 +22,7 @@ async def read_root():
 
 # Define the login endpoint
 @app.post("/login", response_model=TokenResponse)
-async def login(username: str = Form(...), password: str = Form(...)):
+async def login(username: str = Form(...), password: SecretStr = Form(...)):
     """
     Login endpoint to authenticate the user and return an access token.
 
