@@ -56,7 +56,7 @@ class AuthController:
 
         return TokenResponse(access_token=access_token)
 
-    @ staticmethod
+    @staticmethod
     def protected_endpoint(
         credentials: HTTPAuthorizationCredentials = Depends(bearer_scheme),
     ) -> UserInfo:
