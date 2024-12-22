@@ -1,10 +1,10 @@
 from typing import Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, SecretStr
 
 
 class TokenRequest(BaseModel):
     username: str
-    password: str
+    password: SecretStr
 
 
 class TokenResponse(BaseModel):
