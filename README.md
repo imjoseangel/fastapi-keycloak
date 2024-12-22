@@ -1,6 +1,6 @@
 # FastAPI Keycloak Integration
 
-![Integrating FastAPI with Keycloak for Authentication](./assets/Integrating%20FastAPI%20with%20Keycloak%20for%20Authentication.jpg)
+![Integrating FastAPI with Keycloak for Authentication](./assets/Integrating%20FastAPI%20with%20Keycloak%20for%20Authentication.png)
 
 This project demonstrates how to integrate [Keycloak](https://www.keycloak.org/) with a [FastAPI](https://fastapi.tiangolo.com/) application using Docker and Docker Compose for authentication.
 
@@ -16,7 +16,6 @@ This project demonstrates how to integrate [Keycloak](https://www.keycloak.org/)
 - [Testing the Authentication](#testing-the-authentication)
 - [Contributing](#contributing)
 - [License](#license)
-- [Acknowledgments](#acknowledgments)
 
 ## Introduction
 
@@ -32,7 +31,7 @@ This project provides a template for securing a FastAPI application using Keyclo
 
 ## Prerequisites
 
-- [Python 3.11](https://www.python.org/downloads/)
+- [Python 3.12](https://www.python.org/downloads/)
 - [Docker](https://www.docker.com/get-started)
 - [Docker Compose](https://docs.docker.com/compose/install/)
 - [Git](https://git-scm.com/)

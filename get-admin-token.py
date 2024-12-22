@@ -1,10 +1,9 @@
 from keycloak import KeycloakOpenID
-import httpx
 
 # Configure client
 keycloak_openid = KeycloakOpenID(server_url="https://localhost:8443/auth",
-                                 client_id="zidp",
-                                 realm_name="zidp",
+                                 client_id="test",
+                                 realm_name="test",
                                  client_secret_key="iwj45woMQbbsQeDC2xyFSPZsmxSFq027",
                                  verify=False)
 
@@ -28,7 +27,7 @@ auth_url = keycloak_openid.auth_url(
 
 # print(access_token)
 
-token = keycloak_openid.token("zidp", "zidp")
+token = keycloak_openid.token("test", "test")
 
 userinfo = keycloak_openid.userinfo(token['access_token'])
 token = keycloak_openid.refresh_token(token['refresh_token'])
