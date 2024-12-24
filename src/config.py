@@ -27,3 +27,6 @@ keycloak_openid = KeycloakOpenID(
 
 def get_openid_config():
     return keycloak_openid.well_known()
+
+def get_openid():
+    return keycloak_openid
