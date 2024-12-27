@@ -1,7 +1,6 @@
 from fastapi import FastAPI, Depends, Form, Request
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi.responses import RedirectResponse
-from fastapi.middleware.cors import CORSMiddleware
 from src.models import TokenResponse, UserInfo
 from src.controller import AuthController
 from pydantic import SecretStr
@@ -15,10 +14,6 @@ bearer_scheme = HTTPBearer()
 
 # Configure client
 keycloak_openid = get_openid()
-
-app.add_middleware(
-    CORSMiddleware, allow_origins=['null'],
-    allow_credentials=True, allow_methods=['*'], allow_headers=['*'])
 
 # Define the root endpoint
 @app.get("/")
@@ -45,7 +40,7 @@ async def login(username: str = Form(...), password: SecretStr = Form(...)):
     return AuthController.login(username, password)
 
 
-@app.get("/sso", include_in_schema=False)
+@app.get("/sso")
 async def sso(request: Request):
 
     # Generate the auth URL
