@@ -50,7 +50,7 @@ async def sso(request: Request):
 
     return RedirectResponse(auth_url)
 
-@app.get("/callback", include_in_schema=False)
+@app.get("/callback", response_model=TokenResponse, include_in_schema=False)
 async def callback(request: Request):
 
     # Extract the code from the URL
