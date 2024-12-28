@@ -26,7 +26,7 @@ async def read_root():
 
 
 # Define the login endpoint
-@app.get("/login", response_class=RedirectResponse, include_in_schema=False)
+@app.get("/login", response_class=RedirectResponse)
 async def login(request: Request):
     """
     Login endpoint to authenticate the user and return an access token.
