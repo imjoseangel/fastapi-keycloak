@@ -15,11 +15,11 @@ class AuthService:
             token = keycloak_openid.token(
                 username, password.get_secret_value())
             return token["access_token"]
-        except KeycloakAuthenticationError:
+        except KeycloakAuthenticationError as exc:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Invalid username or password",
-            )
+            ) from exc
 
     @staticmethod
     def verify_token(token: str) -> UserInfo:
@@ -38,8 +38,8 @@ class AuthService:
                 email=user_info.get("email"),
                 full_name=user_info.get("name"),
             )
-        except KeycloakAuthenticationError:
+        except KeycloakAuthenticationError as exc:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Could not validate credentials",
-            )
+            ) from exc
