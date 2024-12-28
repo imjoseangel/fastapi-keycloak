@@ -1,24 +1,33 @@
-from fastapi import HTTPException, status
-from keycloak.exceptions import KeycloakAuthenticationError
+from fastapi import HTTPException, status, Request
+from keycloak.exceptions import KeycloakAuthenticationError, KeycloakPostError
 from src.config import keycloak_openid
 from src.models import UserInfo
-from pydantic import SecretStr
 
 
 class AuthService:
     @staticmethod
-    def authenticate_user(username: str, password: SecretStr) -> str:
+    def authenticate_user(keycode: str, request: Request) -> str:
         """
         Authenticate the user using Keycloak and return an access token.
         """
         try:
+
             token = keycloak_openid.token(
-                username, password.get_secret_value())
+                grant_type='authorization_code',
+                code=keycode,
+                redirect_uri=str(request.url_for('callback')),
+                scope="openid profile email"
+            )
             return token["access_token"]
         except KeycloakAuthenticationError as exc:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Invalid username or password",
+                detail="Invalid Login",
+            ) from exc
+        except KeycloakPostError as exc:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Invalid Grant",
             ) from exc
 
     @staticmethod

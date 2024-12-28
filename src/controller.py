@@ -1,8 +1,7 @@
-from fastapi import Depends, HTTPException, status, Form
+from fastapi import Depends, HTTPException, status, Request
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from src.models import TokenResponse, UserInfo
 from src.service import AuthService
-from pydantic import SecretStr
 
 # Initialize HTTPBearer security dependency
 bearer_scheme = HTTPBearer()
@@ -24,13 +23,14 @@ class AuthController:
         return {
             "message": (
                 "Welcome to the Keycloak authentication system. "
-                "Use the /login endpoint to authenticate and /protected to access the protected resource."
+                "Use the /login endpoint to authenticate and /protected "
+                "endpoint to access the protected resource."
             ),
             "documentation": "/docs",
         }
 
     @staticmethod
-    def login(username: str = Form(...), password: SecretStr = Form(...)) -> TokenResponse:
+    def login(keycode: str, request: Request) -> TokenResponse:
         """
         Authenticate user and return access token.
 
@@ -46,7 +46,7 @@ class AuthController:
         """
         # Authenticate the user using the AuthService
         access_token = AuthService.authenticate_user(
-            username, password)
+            keycode, request)
 
         if not access_token:
             raise HTTPException(
@@ -64,7 +64,8 @@ class AuthController:
         Access a protected resource that requires valid token authentication.
 
         Args:
-            credentials (HTTPAuthorizationCredentials): Bearer token provided via HTTP Authorization header.
+            credentials (HTTPAuthorizationCredentials): Bearer token provided
+            via HTTP Authorization header.
 
         Raises:
             HTTPException: If the token is invalid or not provided.
